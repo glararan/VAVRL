@@ -96,7 +96,7 @@ namespace VAVRL
 	
 	void LCD::setBacklight(bool state)
 	{
-		if(on)
+		if(state)
 			backlight = LCD_BACKLIGHT;
 		else
 			backlight = LCD_NOBACKLIGHT;
@@ -106,7 +106,7 @@ namespace VAVRL
 	
 	void LCD::setCursor(bool state, bool blink /* = false */)
 	{
-		if(on)
+		if(state)
 		{
 			displayControl |= LCD_CURSORON;
 			
@@ -114,7 +114,7 @@ namespace VAVRL
 		}
 		else
 		{
-			_displaycontrol &= ~LCD_CURSORON;
+			displayControl &= ~LCD_CURSORON;
 			
 			command(LCD_DISPLAYCONTROL | displayControl);
 		}
@@ -170,8 +170,8 @@ namespace VAVRL
 	
 	void LCD::expanderWrite(uint8_t data)
 	{
-		TwoWire.startTransmittion(_Addr);
-		TwoWire.write(data | _backlightval);
+		TwoWire.startTransmittion(address);
+		TwoWire.write(data | backlight);
 		TwoWire.closeTransmittion();
 	}
 	
