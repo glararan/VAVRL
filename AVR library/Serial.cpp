@@ -2,6 +2,8 @@
 
 #include "Serial.h"
 
+#include "Utility.h"
+
 namespace VAVRL
 {
 	void Serial::Initialize(uint16_t baudrate_index)
@@ -47,6 +49,25 @@ namespace VAVRL
 	{
 		while(*data)
 			WriteChar((uint8_t)*data++);
+	}
+	
+	void Serial::WriteString(const char* format, ...)
+	{
+		va_list args;
+		va_start(args, format);
+		
+		int size = vsnprintf(NULL, 0, format, args);
+		
+		char* str = new char[size + 1];
+		
+		vsprintf(str, format, args);
+		
+		va_end(args);
+		
+		while(*str)
+			WriteChar((uint8_t)*str++);
+			
+		delete str;
 	}
 
 	void Serial::WriteString(unsigned char* data)

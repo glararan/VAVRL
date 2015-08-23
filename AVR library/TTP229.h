@@ -11,9 +11,9 @@ namespace VAVRL
 	
 	struct ButtonEvent
 	{
-		uint8_t value;
+		uint8_t Value;
 		
-		ButtonState state;
+		ButtonState State;
 	};
 	
 	class TTP229

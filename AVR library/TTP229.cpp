@@ -86,24 +86,24 @@ namespace VAVRL
 		{
 			uint8_t buttonNumber = ButtonFromFlag(pressed);
 			
-			event.value = (buttonNumber & 0x7F);
-			event.state = Pressed;
+			event.Value = (buttonNumber & 0x7F);
+			event.State = Pressed;
 			
-			previousState |= _BV(event.value - 1);
+			previousState |= _BV(event.Value - 1);
 		}
 		else if(released != 0)
 		{
 			uint8_t buttonNumber = ButtonFromFlag(released);
 			
-			event.value = (buttonNumber & 0x7F);
-			event.state = Released;
+			event.Value = (buttonNumber & 0x7F);
+			event.State = Released;
 			
-			previousState &= ~_BV(event.value - 1);
+			previousState &= ~_BV(event.Value - 1);
 		}
 		else
 		{
-			event.value = 0;
-			event.state = None;
+			event.Value = 0;
+			event.State = None;
 		}
 		
 		return event;

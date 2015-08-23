@@ -1,4 +1,6 @@
-#include <stdint.h>
+#include "Settings.h"
+
+typedef unsigned char uint8_t;
 
 namespace VAVRL
 {
