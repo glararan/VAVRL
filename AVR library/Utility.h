@@ -61,6 +61,22 @@ namespace VAVRL
 		return (uint8_t)(x >> 8);
 	}
 	
+	inline int random(int max)
+	{
+		return rand() % max;
+	}
+	
+	inline int random(int min, int max)
+	{
+		return rand() % (max - min) + min;
+	}
+	
+	template<typename T>
+	inline int arrayLength(T* array)
+	{
+		return (sizeof(array)/sizeof(*array));
+	}
+	
 	inline void enableInterrupts()  { sei(); }
 	inline void disableInterrupts() { cli(); }
 		
