@@ -441,6 +441,47 @@ namespace VAVRL
 		return 1;
 	}
 	
+	int I2C::read()
+	{
+		int value = -1;
+		
+		if(rxBufferIndex < rxBufferLength)
+			value = rxBuffer[rxBufferLength++];
+			
+		return value;
+	}
+	
+	uint8_t I2C::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop /* = true */)
+	{
+		if(isize > 0)
+		{
+			startTransmittion(address);
+			
+			if(isize > 3)
+				isize = 3;
+			
+			while(isize-- > 0)
+				write((uint8_t)(iaddress >> (isize * 8)));
+			
+			closeTransmittion(false);
+		}
+		
+		if(quantity > TWI_BUFFER_LENGTH)
+			quantity = TWI_BUFFER_LENGTH;
+			
+		uint8_t result = TWI::Instance->readFrom(address, rxBuffer, quantity, sendStop);
+		
+		rxBufferIndex  = 0;
+		rxBufferLength = result;
+		
+		return result;
+	}
+	
+	uint8_t I2C::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop /* = true */)
+	{
+		return requestFrom(address, quantity, 0, 0, sendStop);
+	}
+	
 	void I2C::onReceive(void (*function)(int))
 	{
 		user_onReceive = function;
