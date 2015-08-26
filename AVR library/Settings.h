@@ -7,3 +7,9 @@
 #define DHT_PORT PORTB
 #define DHT_PINP PINB
 #define DHT_PIN  PORTB1
+
+/// IR Remote settings
+#define IR_DDR  DDRD
+#define IR_PORT PORTD
+#define IR_PINP PIND
+#define IR_PIN  PORTD2

@@ -431,7 +431,6 @@ namespace VAVRL
 			if(txBufferLength >= TWI_BUFFER_LENGTH)
 				return 0;
 			
-			/// !!!
 			txBuffer[txBufferIndex++] = data;
 			
 			txBufferLength = txBufferIndex;

@@ -50,26 +50,7 @@ namespace VAVRL
 	
 	class LCD
 	{
-	public:
-		/*enum Commands
-		{
-			ClearDisplay   = 0x01,
-			ReturnHome     = 0x02,
-			EntryMode      = 0x04,
-			DisplayControl = 0x08,
-			CursorShift    = 0x10,
-			FunctionSet    = 0x20,
-			SetCGRAMAddr   = 0x40,
-			SetDDRAMAddr   = 0x80
-		};
-		
-		enum Flags
-		{
-			EntryRight = 0x00,
-			EntryLeft  = 0x02,
-				
-		};*/
-	
+	public:	
 		LCD(uint8_t addr, uint8_t cols, uint8_t rows, uint8_t charsize = 0);
 		
 		void Clear();

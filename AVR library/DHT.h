@@ -28,8 +28,6 @@ namespace VAVRL
 		
 		uint8_t data[6];
 		
-		unsigned long lastReadTime;
-		
 		uint8_t humidity;
 		uint8_t temperature;
 		

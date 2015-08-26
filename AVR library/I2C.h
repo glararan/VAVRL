@@ -1,7 +1,10 @@
 #include "Settings.h"
 
-#include <stdint.h>
 #include <stdlib.h>
+
+typedef unsigned char uint8_t;
+typedef signed char   int8_t;
+typedef unsigned long int uint32_t;
 
 #define TWI_FREQ          100000L
 #define TWI_BUFFER_LENGTH 32

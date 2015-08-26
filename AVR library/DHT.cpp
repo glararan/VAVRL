@@ -1,7 +1,6 @@
 #include "DHT.h"
 
 #include "Utility.h"
-#include "Serial.h"
 
 #ifndef DHT_DDR
 	#define DHT_DDR  DDRB
@@ -12,9 +11,7 @@
 
 namespace VAVRL
 {
-	DHT::DHT(Type DHTtype)
-	: type(DHTtype)
-	, lastReadTime(0)
+	DHT::DHT(Type DHTtype) : type(DHTtype)
 	{
 	}
 	
@@ -88,16 +85,12 @@ namespace VAVRL
 		// checksum
 		if(data[0] + data[1] + data[2] + data[3] == data[4])
 			return true;
-		else
-			Serial::WriteString("%d - %d - %d - %d = %d\n", data[0], data[1], data[2], data[3], data[4]);
 			
 		return false;
 	}
 	
 	uint8_t DHT::Temperature()
 	{
-		int t;
-		
 		switch(type)
 		{
 			case DHT11:
@@ -106,11 +99,11 @@ namespace VAVRL
 			
 			case DHT21:
 			case DHT22:
-				{
-					t  = data[2] & 0x7F;
-					t *= 256;
-					t += data[3];
-					t /= 10;
+				{					
+					int t = data[2] & 0x7F;
+					t    *= 256;
+					t    += data[3];
+					t    /= 10;
 					
 					if(data[2] & 0x80)
 						t *= -1;
@@ -122,8 +115,6 @@ namespace VAVRL
 	
 	uint8_t DHT::Humidity()
 	{
-		int h;
-		
 		switch(type)
 		{
 			case DHT11:
@@ -133,10 +124,10 @@ namespace VAVRL
 			case DHT21:
 			case DHT22:
 				{
-					h  = data[0];
-					h *= 256;
-					h += data[1];
-					h /= 10;
+					int h = data[0];
+					h    *= 256;
+					h    += data[1];
+					h    /= 10;
 					
 					return h;
 				}
