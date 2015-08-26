@@ -31,7 +31,7 @@ namespace VAVRL
 		}
 	};
 	
-	RGB KnownColors[] =
+	static const RGB KnownColors[] =
 	{
 		RGB(255, 255, 255), // white
 		RGB(255,   0,   0), // red
