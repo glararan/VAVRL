@@ -1,3 +1,6 @@
+#ifndef DHT_H
+#define DHT_H
+
 #include "Settings.h"
 
 typedef unsigned char uint8_t;
@@ -34,3 +37,5 @@ namespace VAVRL
 		bool Read();
 	};
 }
+
+#endif // DHT_H

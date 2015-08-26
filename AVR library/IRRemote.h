@@ -1,3 +1,6 @@
+#ifndef IRREMOTE_H
+#define IRREMOTE_H
+
 #include "Settings.h"
 
 typedef unsigned int    uint16_t;
@@ -127,3 +130,5 @@ namespace VAVRL
 		void Resume();
 	};
 }
+
+#endif // IRREMOTE_H

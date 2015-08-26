@@ -1,3 +1,6 @@
+#ifndef LCD_H
+#define LCD_H
+
 #include "Utility.h"
 
 namespace VAVRL
@@ -84,3 +87,5 @@ namespace VAVRL
 		uint8_t backlight;
 	};
 }
+
+#endif // LCD_H

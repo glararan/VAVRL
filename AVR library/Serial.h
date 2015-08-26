@@ -1,3 +1,6 @@
+#ifndef SERIAL_H
+#define SERIAL_H
+
 #include "Settings.h"
 
 typedef unsigned char uint8_t;
@@ -19,3 +22,5 @@ namespace VAVRL
 		static void WriteUInt16(uint16_t data);
 	};
 }
+
+#endif // SERIAL_H

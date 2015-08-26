@@ -1,3 +1,6 @@
+#ifndef SETTINGS_H
+#define SETTINGS_H
+
 #ifndef F_CPU
 	#define F_CPU 16000000UL
 #endif
@@ -13,3 +16,5 @@
 #define IR_PORT PORTD
 #define IR_PINP PIND
 #define IR_PIN  PORTD2
+
+#endif // SETTINGS_H

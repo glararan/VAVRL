@@ -1,3 +1,6 @@
+#ifndef RGB_H
+#define RGB_H
+
 #include "Settings.h"
 
 typedef unsigned char uint8_t;
@@ -43,3 +46,5 @@ namespace VAVRL
 		RGB(255,   0, 128)  // pink-purple
 	};
 }
+
+#endif // RGB_H

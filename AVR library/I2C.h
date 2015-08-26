@@ -1,3 +1,6 @@
+#ifndef I2C_H
+#define I2C_H
+
 #include "Settings.h"
 
 #include <stdlib.h>
@@ -103,3 +106,5 @@ namespace VAVRL
 	
 	extern I2C TwoWire;
 }
+
+#endif // I2C_H

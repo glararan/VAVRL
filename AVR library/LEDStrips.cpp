@@ -5,7 +5,7 @@ using namespace VAVRL;
 
 namespace VAVRL
 {
-	void UCS1903::Initialize(uint8_t* port, uint8_t pin)
+	void UCS1903::Initialize(volatile uint8_t* port, uint8_t pin)
 	{
 		Port = port;
 		Pin  = pin;

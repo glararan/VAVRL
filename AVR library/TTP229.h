@@ -1,3 +1,6 @@
+#ifndef TTP229_H
+#define TTP229_H
+
 #include "Utility.h"
 
 namespace VAVRL
@@ -45,3 +48,5 @@ namespace VAVRL
 		uint8_t ButtonFromFlag(uint16_t changes);
 	};
 }
+
+#endif // TTP229_H

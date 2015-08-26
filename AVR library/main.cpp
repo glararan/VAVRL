@@ -191,6 +191,6 @@ void LEDstrips_example()
 		for(uint8_t i = 0; i < 10; ++i)
 			array[i] = KnownColors[random(0, arrayLength(KnownColors))];
 		
-		UCS1903::Render(&array);
+		UCS1903::Render(array);
 	}
 }

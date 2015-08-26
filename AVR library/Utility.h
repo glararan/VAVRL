@@ -1,3 +1,6 @@
+#ifndef UTILITY_H
+#define UTILITY_H
+
 #include "Settings.h"
 
 #include <avr/io.h>
@@ -141,3 +144,5 @@ namespace VAVRL
 		
 	}
 }
+
+#endif // UTILITY_H

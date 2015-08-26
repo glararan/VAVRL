@@ -1,3 +1,6 @@
+#ifndef MATRIXKEYBOARD_H
+#define MATRIXKEYBOARD_H
+
 #include "Utility.h"
 
 namespace VAVRL
@@ -24,3 +27,5 @@ namespace VAVRL
 		uint8_t Pinrows[4];
 	};
 }
+
+#endif // MATRIXKEYBOARD_H
