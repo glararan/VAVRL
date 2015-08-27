@@ -446,7 +446,7 @@ namespace VAVRL
 		int value = -1;
 		
 		if(rxBufferIndex < rxBufferLength)
-			value = rxBuffer[rxBufferLength++];
+			value = rxBuffer[rxBufferIndex++];
 			
 		return value;
 	}
