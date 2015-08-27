@@ -180,7 +180,7 @@ void MatrixKeyboard_example() // not tested!!!
 
 void LEDstrips_example()
 {
-	UCS1903::Initialize(&PINB, PORTB0);
+	DDRD |= _BV(UCS1903_PIN);
 	
 	RGB array[10];
 	
@@ -191,6 +191,6 @@ void LEDstrips_example()
 		for(uint8_t i = 0; i < 10; ++i)
 			array[i] = KnownColors[random(0, arrayLength(KnownColors))];
 		
-		UCS1903::Render(array);
+		UCS1903::Render(array, arrayLength(array));
 	}
 }

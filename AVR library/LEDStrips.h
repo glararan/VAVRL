@@ -3,17 +3,14 @@
 
 #include "RGB.h" // include stdint.h
 
+typedef unsigned int uint16_t;
+
 namespace VAVRL
 {
 	class UCS1903
 	{
 	public:
-		static void Render(RGB* array);
-		static void Initialize(volatile uint8_t* port, uint8_t pin);
-		
-	private:
-		static volatile uint8_t* Port;
-		static uint8_t Pin;
+		static void Render(RGB* array, uint16_t length);
 	};
 }
 

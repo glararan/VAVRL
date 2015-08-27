@@ -17,4 +17,8 @@
 #define IR_PINP PIND
 #define IR_PIN  PORTD2
 
+// LED strips settings
+#define UCS1903_PORT PORTD
+#define UCS1903_PIN  PORTD7
+
 #endif // SETTINGS_H

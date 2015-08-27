@@ -4,39 +4,30 @@
 using namespace VAVRL;
 
 namespace VAVRL
-{
-	volatile uint8_t* UCS1903::Port = 0;
-	uint8_t UCS1903::Pin            = 0;
-	
-	void UCS1903::Initialize(volatile uint8_t* port, uint8_t pin)
+{	
+	void UCS1903::Render(RGB* array, uint16_t length)
 	{
-		Port = port;
-		Pin  = pin;
-	}
-	
-	void UCS1903::Render(RGB* array)
-	{
-		for(uint8_t i = 0; i < (sizeof(array) / sizeof(*array)); ++i)
+		for(uint16_t i = 0; i < length; ++i)
 		{
 			for(uint8_t g = 0; g < 8; ++g)
 			{
 				if(array[i].green & (1 << g))
 				{
-					digitalWrite(Port, Pin, HIGH);
+					UCS1903_PORT |= _BV(UCS1903_PIN);
 					
 					_delay_us(2);
 					
-					digitalWrite(Port, Pin, LOW);
+					UCS1903_PORT &= ~_BV(UCS1903_PIN);
 					
 					_delay_us(0.5);
 				}
 				else
 				{
-					digitalWrite(Port, Pin, HIGH);
+					UCS1903_PORT |= _BV(UCS1903_PIN);
 					
 					_delay_us(0.5);
 					
-					digitalWrite(Port, Pin, LOW);
+					UCS1903_PORT &= ~_BV(UCS1903_PIN);
 					
 					_delay_us(2);
 				}
@@ -46,21 +37,21 @@ namespace VAVRL
 			{
 				if(array[i].red & (1 << r))
 				{
-					digitalWrite(Port, Pin, HIGH);
+					UCS1903_PORT |= _BV(UCS1903_PIN);
 					
 					_delay_us(2);
 					
-					digitalWrite(Port, Pin, LOW);
+					UCS1903_PORT &= ~_BV(UCS1903_PIN);
 					
 					_delay_us(0.5);
 				}
 				else
 				{
-					digitalWrite(Port, Pin, HIGH);
+					UCS1903_PORT |= _BV(UCS1903_PIN);
 					
 					_delay_us(0.5);
 					
-					digitalWrite(Port, Pin, LOW);
+					UCS1903_PORT &= ~_BV(UCS1903_PIN);
 					
 					_delay_us(2);
 				}
@@ -70,21 +61,21 @@ namespace VAVRL
 			{
 				if(array[i].blue & (1 << b))
 				{
-					digitalWrite(Port, Pin, HIGH);
+					UCS1903_PORT |= _BV(UCS1903_PIN);
 					
 					_delay_us(2);
 					
-					digitalWrite(Port, Pin, LOW);
+					UCS1903_PORT &= ~_BV(UCS1903_PIN);
 					
 					_delay_us(0.5);
 				}
 				else
 				{
-					digitalWrite(Port, Pin, HIGH);
+					UCS1903_PORT |= _BV(UCS1903_PIN);
 					
 					_delay_us(0.5);
 					
-					digitalWrite(Port, Pin, LOW);
+					UCS1903_PORT &= ~_BV(UCS1903_PIN);
 					
 					_delay_us(2);
 				}

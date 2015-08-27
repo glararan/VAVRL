@@ -74,10 +74,10 @@ namespace VAVRL
 		return rand() % (max - min) + min;
 	}
 	
-	template<typename T>
-	inline int arrayLength(T* array)
+	template<unsigned N, typename T>
+	inline int arrayLength(T (&array)[N])
 	{
-		return (sizeof(array)/sizeof(*array));
+		return (sizeof(array)/sizeof(array[0]));
 	}
 	
 	inline void enableInterrupts()  { sei(); }
