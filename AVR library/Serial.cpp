@@ -1,11 +1,22 @@
 #include <avr/io.h>
 
+#include <stdio.h>
+
 #include "Serial.h"
 
 #include "Utility.h"
 
 namespace VAVRL
 {
+	int WriteCharStream(char data, FILE* stream)
+	{
+		Serial::WriteChar((uint8_t)data);
+		
+		return 0;
+	}
+	
+	static FILE UART_STR;
+	
 	void Serial::Initialize(uint16_t baudrate_index)
 	{
 #if defined(__AVR__ATmega8__) || defined(__AVR__ATmega8A__) || defined(UCSRB)
@@ -21,6 +32,11 @@ namespace VAVRL
 		UCSR0C = (1 << UCSZ00) | (1 << UCSZ01);
 		UCSR0B = (1 << RXEN0)  | (1 << TXEN0) | (1 << RXCIE0);
 #endif
+		
+		UART_STR.put   = WriteCharStream;
+		UART_STR.flags = _FDEV_SETUP_RW;
+
+		stdout = &UART_STR;
 	}
 	
 	void Serial::WriteChar(uint8_t data)
@@ -56,18 +72,20 @@ namespace VAVRL
 		va_list args;
 		va_start(args, format);
 		
-		int size = vsnprintf(NULL, 0, format, args);
+		/*int size = vsnprintf(NULL, 0, format, args);
 		
 		char* str = new char[size + 1];
 		
-		vsprintf(str, format, args);
+		vsprintf(str, format, args);*/
+		
+		vprintf(format, args);
 		
 		va_end(args);
-		
-		while(*str)
+			
+		/*while(*str)
 			WriteChar((uint8_t)*str++);
 			
-		delete str;
+		delete[] str;*/
 	}
 
 	void Serial::WriteString(unsigned char* data)
