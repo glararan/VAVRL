@@ -1,9 +1,7 @@
 #ifndef LEDSTRIPS_H
 #define LEDSTRIPS_H
 
-#include "RGB.h" // include stdint.h
-
-typedef unsigned int uint16_t;
+#include "Color.h" // include stdint.h
 
 namespace VAVRL
 {
@@ -11,6 +9,11 @@ namespace VAVRL
 	{
 	public:
 		static void Render(RGB* array, uint16_t length);
+		static void RenderLamp(RGB* array, uint16_t length);
+
+	private:
+		static void setBit(uint8_t data, uint8_t n);
+		static void setBits(uint8_t data);
 	};
 }
 

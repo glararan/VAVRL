@@ -5,10 +5,27 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/delay.h>
+#include <avr/pgmspace.h>
+#include <avr/sfr_defs.h>
+#include <util/delay.h>
+#include <util/atomic.h>
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#define clockCyclesPerMicrosecond() (F_CPU / 1000000L)
+#define clockCyclesToMicroseconds(a) (a / clockCyclesPerMicrosecond())
+#define microsecondsToClockCycles(a) (a * clockCyclesPerMicrosecond())
+
+#define MILLIS_INC (((64 * 256) / (F_CPU / 1000000L)) / 1000)
+
+#ifndef cbi
+	#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#endif
+
+#ifndef sbi
+	#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
 
 typedef uint8_t byte;
 
@@ -34,6 +51,40 @@ inline void operator delete[](void* ptr)
 
 namespace VAVRL
 {
+	extern volatile unsigned long Millis;
+	extern volatile unsigned long OverflowCount;
+
+	extern uint8_t AnalogReference;
+
+	inline unsigned long micros()
+	{
+		unsigned long m;
+		uint8_t t;
+
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+		{
+			m = OverflowCount;
+
+			#if defined(TCNT0)
+				t = TCNT0;
+			#elif defined(TCNT0L)
+				t = TCNT0L;
+			#else
+				#error TIMER 0 not defined
+			#endif
+
+			#ifdef TIFR0
+				if ((TIFR0 & _BV(TOV0)) && t < 255)
+					m++;
+			#else
+				if ((TIFR & _BV(TOV0)) && t < 255)
+					m++;
+			#endif
+		}
+
+		return ((m << 8) + t) * (64 / clockCyclesPerMicrosecond());
+	}
+
 	template<typename T>
 	T min(T a, T b)
 	{
@@ -62,6 +113,18 @@ namespace VAVRL
 	T highByte(T x)
 	{
 		return (uint8_t)(x >> 8);
+	}
+
+	template<typename T>
+	T constrain(T amt, T low, T high)
+	{
+		return amt < low ? low : (amt > high ? high : amt);
+	}
+
+	template<typename T>
+	T map(T x, T in_min, T in_max, T out_min, T out_max)
+	{
+		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 	
 	inline int random(int max)
@@ -134,9 +197,20 @@ namespace VAVRL
 		return (*portPin & (1 << pin));
 	}
 	
-	inline int analogRead(uint8_t pin)
+	inline uint16_t analogRead(uint8_t pin)
 	{
-		return 0;
+		uint8_t low, high;
+		
+		ADMUX = (AnalogReference << 6) | (pin & 0x07);
+		
+		sbi(ADCSRA, ADSC);
+		
+		while(bit_is_set(ADCSRA, ADSC));
+		
+		low  = ADCL;
+		high = ADCH;
+		
+		return (high << 8) | low;
 	}
 	
 	inline void analogWrite(uint8_t pin, uint16_t value)

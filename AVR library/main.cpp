@@ -14,8 +14,40 @@
 #include "TTP229.h"
 #include "MatrixKeyboard.h"
 #include "LEDStrips.h"
+#include "MSGEQ.h"
 
 using namespace VAVRL;
+
+volatile unsigned long VAVRL::Millis = 0;
+volatile unsigned long VAVRL::OverflowCount = 0;
+
+uint8_t VAVRL::AnalogReference = 1;
+
+void initAnalog()
+{
+	sbi(ADCSRA, ADPS2);
+	sbi(ADCSRA, ADPS1);
+	sbi(ADCSRA, ADPS0);
+	sbi(ADCSRA, ADEN);
+}
+
+void initTimer()
+{
+	sbi(TCCR0A, WGM01);
+	sbi(TCCR0A, WGM00);
+	sbi(TCCR0B, CS01);
+	sbi(TCCR0B, CS00);
+	sbi(TIMSK0, TOIE0);
+}
+
+void initMSGEQ()
+{
+	MSGEQ7_DDR |= _BV(MSGEQ7_STROBE_PIN); // strobe - output
+	MSGEQ7_DDR |= _BV(MSGEQ7_RESET_PIN); // reset - output
+	
+	MSGEQ7_PORT |= _BV(MSGEQ7_STROBE_PIN);  // strobe high
+	MSGEQ7_PORT &= ~_BV(MSGEQ7_RESET_PIN); // reset low
+}
 
 void DHT_example()
 {
@@ -181,16 +213,52 @@ void MatrixKeyboard_example() // not tested!!!
 void LEDstrips_example()
 {
 	DDRD |= _BV(UCS1903_PIN);
+
+	uint8_t length = 10;
 	
-	RGB array[10];
+	RGB* array = new RGB[length];
 	
 	srand(0);
 	
 	while(1)
 	{
-		for(uint8_t i = 0; i < 10; ++i)
+		for(uint8_t i = 0; i < length; ++i)
 			array[i] = KnownColors[random(0, arrayLength(KnownColors))];
 		
-		UCS1903::Render(array, arrayLength(array));
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+		{
+			UCS1903::Render(array, length);
+		}
 	}
+}
+
+void MSGEQ_example()
+{
+	#define MSGEQ7_INTERVAL ReadsPerSecond(35)
+
+	initAnalog();
+	initMSGEQ();
+
+	while(1)
+	{
+		bool newReading = MSGEQ_read(MSGEQ7_INTERVAL);
+
+		if(newReading)
+		{
+			uint8_t red   = mapNoise(MSGEQ_get(MSGEQ7_BASS), 17);
+			uint8_t green = mapNoise(MSGEQ_get(MSGEQ7_5), 46);
+			uint8_t blue  = mapNoise(MSGEQ_get(MSGEQ7_6), 27);
+
+			uint16_t volume = MSGEQ_getVolume();
+
+			RGB rgb = RGB(red, green, blue);
+		}
+	}
+}
+
+/// ISR
+ISR(TIMER0_OVF_vect)
+{
+	Millis += MILLIS_INC;
+	OverflowCount++;
 }
